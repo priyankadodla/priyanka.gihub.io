@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Resume | Priyanka Thumma</title>
+    <title>Priyanka Thumma | Resume</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Add Font Awesome CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoF2S/b6f5rL5g2G6x6i6F6j6g6Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Chosen Palette: Optum Inspired (Emerald, Teal, Zinc) -->
+    <!-- Chosen Palette: Black, White, and Orange (Zinc, Orange) -->
     <!-- Application Structure Plan: A single-page, multi-section dashboard layout. The key interaction is a horizontal career timeline. Clicking a role on the timeline dynamically updates a details pane, allowing for non-linear exploration of her experience. This structure was chosen to transform the static resume into an engaging narrative of career growth, making it easier for recruiters to digest key information and see her specialization in Pega. The flow guides from a high-level summary to deep-dives into experience and skills. -->
     <!-- Visualization & Content Choices:
         - Career History -> Goal: Show change/progression -> Presentation: Interactive horizontal timeline -> Interaction: Click to update details panel -> Justification: Visually compelling, tells a story of growth from Mainframe to senior Pega roles -> Library/Method: HTML/CSS/JS.
@@ -22,30 +22,30 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* slate-50 */
+            background-color: #ffffff; /* white */
         }
         .nav-link {
             transition: color 0.3s, border-bottom-color 0.3s;
             border-bottom: 2px solid transparent;
         }
         .nav-link:hover, .nav-link.active {
-            color: #14b8a6; /* teal-500 */
-            border-bottom-color: #14b8a6;
+            color: #fb923c; /* orange-400 */
+            border-bottom-color: #fb923c;
         }
         .timeline-item {
             cursor: pointer;
             transition: all 0.3s ease;
         }
         .timeline-item.active .timeline-dot {
-            background-color: #059669; /* emerald-600 */
+            background-color: #f97316; /* orange-500 */
             transform: scale(1.25);
         }
         .timeline-item.active .timeline-date, .timeline-item.active .timeline-title {
-            color: #059669; /* emerald-600 */
+            color: #f97316; /* orange-500 */
             font-weight: 700;
         }
         .timeline-line {
-            background-color: #e2e8f0; /* slate-200 */
+            background-color: #d4d4d8; /* zinc-300 */
             height: 2px;
             top: 50%;
             transform: translateY(-50%);
@@ -70,13 +70,13 @@
         }
     </style>
 </head>
-<body class="text-slate-700">
+<body class="text-zinc-800">
 
-    <header class="bg-emerald-800 shadow-sm sticky top-0 z-10">
+    <header class="bg-zinc-900 shadow-lg sticky top-0 z-10">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div>
                 <h1 class="text-xl md:text-2xl font-bold text-white">Priyanka Thumma</h1>
-                <p class="text-sm text-emerald-100">Pega Certified Senior System Architect</p>
+                <p class="text-sm text-zinc-300">Pega Certified Senior System Architect</p>
             </div>
             <div class="hidden md:flex space-x-8">
                 <a href="#summary" class="nav-link text-white">Overview</a>
@@ -89,7 +89,7 @@
 
     <main class="container mx-auto px-6 py-12">
         <section id="summary" class="mb-16">
-            <h2 class="text-3xl font-bold text-slate-900 mb-4">Professional Summary</h2>
+            <h2 class="text-3xl font-bold text-zinc-900 mb-4">Professional Summary</h2>
             <div class="bg-white p-8 rounded-lg shadow-md">
                 <p class="text-lg leading-relaxed">
                     Highly accomplished Pega Certified Senior System Architect with over 8 years of software development experience, including a specialized focus of 5+ years as a Pega Application Developer. Proven expertise in designing, developing, and deploying robust Pega solutions, with a strong focus on performance optimization, debugging, and end-to-end SDLC involvement. Adept at collaborating with business stakeholders and implementing efficient, user-friendly applications.
@@ -98,8 +98,8 @@
         </section>
 
         <section id="experience" class="mb-16">
-            <h2 class="text-3xl font-bold text-slate-900 mb-2">Career Timeline</h2>
-            <p class="text-slate-500 mb-8 text-center">Click on a role to view the details.</p>
+            <h2 class="text-3xl font-bold text-zinc-900 mb-2">Career Timeline</h2>
+            <p class="text-zinc-500 mb-8 text-center">Click on a role to view the details.</p>
             
             <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
                 <div class="relative mb-8">
@@ -107,24 +107,24 @@
                     <div id="timeline-container" class="flex justify-between">
                     </div>
                 </div>
-                <div id="experience-details" class="mt-8 p-6 bg-slate-50 rounded-lg min-h-[300px]">
+                <div id="experience-details" class="mt-8 p-6 bg-zinc-50 rounded-lg min-h-[300px]">
                 </div>
             </div>
         </section>
         
         <section id="skills" class="mb-16">
-            <h2 class="text-3xl font-bold text-slate-900 mb-8">Technical Expertise</h2>
+            <h2 class="text-3xl font-bold text-zinc-900 mb-8">Technical Expertise</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="bg-white p-8 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">Experience by Technology</h3>
-                     <p class="text-slate-500 mb-6">This chart visualizes the shift in primary technology focus throughout my career, highlighting the deep specialization in Pega.</p>
+                    <h3 class="text-xl font-bold text-zinc-900 mb-4">Experience by Technology</h3>
+                     <p class="text-zinc-500 mb-6">This chart visualizes the shift in primary technology focus throughout my career, highlighting the deep specialization in Pega.</p>
                     <div class="chart-container h-64 sm:h-80">
                         <canvas id="skillsChart"></canvas>
                     </div>
                 </div>
                 <div class="bg-white p-8 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">Core Pega Competencies</h3>
-                    <p class="text-slate-500 mb-6">A comprehensive overview of the Pega rules, concepts, and features I have hands-on experience with.</p>
+                    <h3 class="text-xl font-bold text-zinc-900 mb-4">Core Pega Competencies</h3>
+                    <p class="text-zinc-500 mb-6">A comprehensive overview of the Pega rules, concepts, and features I have hands-on experience with.</p>
                     <div id="pega-skills-container" class="flex flex-wrap gap-2">
                     </div>
                 </div>
@@ -132,26 +132,26 @@
         </section>
 
         <section id="certifications" class="mb-16">
-            <h2 class="text-3xl font-bold text-slate-900 mb-8">Certifications</h2>
+            <h2 class="text-3xl font-bold text-zinc-900 mb-8">Certifications</h2>
              <div class="grid md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                    <i class="fas fa-award text-4xl mb-4 text-emerald-600"></i>
+                    <i class="fas fa-award text-4xl mb-4 text-orange-500"></i>
                     <h3 class="font-bold text-lg">Pega Certified System Architect (CSA)</h3>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                     <i class="fas fa-certificate text-4xl mb-4 text-emerald-600"></i>
+                     <i class="fas fa-certificate text-4xl mb-4 text-orange-500"></i>
                     <h3 class="font-bold text-lg">Pega Certified Senior System Architect (CSSA)</h3>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                    <i class="fas fa-sitemap text-4xl mb-4 text-emerald-600"></i>
+                    <i class="fas fa-sitemap text-4xl mb-4 text-orange-500"></i>
                     <h3 class="font-bold text-lg">Pega Certified Decisioning Consultant (CPDC)</h3>
                 </div>
             </div>
         </section>
 
-        <footer class="text-center text-slate-500 pt-8 border-t">
+        <footer class="text-center text-zinc-500 pt-8 border-t">
              <div class="mb-4">
-                <h3 class="text-2xl font-bold text-slate-900">Education</h3>
+                <h3 class="text-2xl font-bold text-zinc-900">Education</h3>
                 <p class="text-lg">Bachelor of Technology - Shri Vishnu Engineering College - JNTU Kakinada (2016)</p>
             </div>
             <p>&copy; 2024 Priyanka Thumma | Interactive Resume</p>
@@ -232,13 +232,13 @@
                 const job = resumeData.experience.find(j => j.id === jobId);
                 if (job) {
                     experienceDetails.innerHTML = `
-                        <h3 class="text-2xl font-bold text-slate-900">${job.role}</h3>
-                        <p class="text-md font-medium text-slate-700">${job.company}</p>
-                        <p class="text-sm text-slate-500 mb-4">${job.date}</p>
+                        <h3 class="text-2xl font-bold text-zinc-900">${job.role}</h3>
+                        <p class="text-md font-medium text-zinc-700">${job.company}</p>
+                        <p class="text-sm text-zinc-500 mb-4">${job.date}</p>
                         <ul class="list-disc pl-5 space-y-2 mb-4">
                             ${job.responsibilities.map(r => `<li>${r}</li>`).join('')}
                         </ul>
-                        <p class="font-bold">Tech Stack: <span class="font-normal bg-teal-100 text-teal-800 text-sm px-2 py-1 rounded">${job.stack}</span></p>
+                        <p class="font-bold">Tech Stack: <span class="font-normal bg-orange-100 text-orange-800 text-sm px-2 py-1 rounded">${job.stack}</span></p>
                     `;
                     
                     document.querySelectorAll('.timeline-item').forEach(item => {
@@ -253,7 +253,7 @@
                 item.dataset.jobId = job.id;
                 item.innerHTML = `
                     <div class="relative inline-block">
-                       <div class="timeline-dot w-4 h-4 bg-slate-400 rounded-full transition-all duration-300"></div>
+                       <div class="timeline-dot w-4 h-4 bg-zinc-400 rounded-full transition-all duration-300"></div>
                     </div>
                     <p class="timeline-date text-xs mt-2">${job.date.split(' - ')[0]}</p>
                     <p class="timeline-title text-sm font-medium">${job.role}</p>
@@ -269,7 +269,7 @@
             const pegaSkillsContainer = document.getElementById('pega-skills-container');
             resumeData.pegaSkills.forEach(skill => {
                 const skillTag = document.createElement('span');
-                skillTag.className = 'bg-slate-200 text-slate-700 text-sm font-medium px-3 py-1 rounded-full';
+                skillTag.className = 'bg-zinc-200 text-zinc-700 text-sm font-medium px-3 py-1 rounded-full';
                 skillTag.textContent = skill;
                 pegaSkillsContainer.appendChild(skillTag);
             });
@@ -283,12 +283,12 @@
                         label: 'Years of Experience',
                         data: [2.5, 5.5],
                         backgroundColor: [
-                            'rgba(100, 116, 139, 0.6)', /* slate-500 */
-                            'rgba(5, 150, 105, 0.6)'    /* emerald-600 */
+                            'rgba(63, 63, 70, 0.6)', /* zinc-700 */
+                            'rgba(249, 115, 22, 0.6)'    /* orange-500 */
                         ],
                         borderColor: [
-                            'rgba(100, 116, 139, 1)',
-                            'rgba(5, 150, 105, 1)'
+                            'rgba(63, 63, 70, 1)',
+                            'rgba(249, 115, 22, 1)'
                         ],
                         borderWidth: 1
                     }]
