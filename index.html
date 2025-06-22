@@ -1,1 +1,363 @@
- "Hello World"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume | Priyanka Thumma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Add Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoF2S/b6f5rL5g2G6x6i6F6j6g6Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Chosen Palette: Optum Inspired (Emerald, Teal, Zinc) -->
+    <!-- Application Structure Plan: A single-page, multi-section dashboard layout. The key interaction is a horizontal career timeline. Clicking a role on the timeline dynamically updates a details pane, allowing for non-linear exploration of her experience. This structure was chosen to transform the static resume into an engaging narrative of career growth, making it easier for recruiters to digest key information and see her specialization in Pega. The flow guides from a high-level summary to deep-dives into experience and skills. -->
+    <!-- Visualization & Content Choices:
+        - Career History -> Goal: Show change/progression -> Presentation: Interactive horizontal timeline -> Interaction: Click to update details panel -> Justification: Visually compelling, tells a story of growth from Mainframe to senior Pega roles -> Library/Method: HTML/CSS/JS.
+        - Technical Skills -> Goal: Organize & Compare -> Presentation: Bar chart for high-level experience (Pega vs. other tech) & categorized skill tags -> Interaction: Chart is for quick visual comparison, tags are for scannability -> Justification: Breaks down a dense list of skills into an easily understandable format -> Library/Method: Chart.js for the bar chart, HTML/Tailwind for tags.
+        - Certifications -> Goal: Inform -> Presentation: Styled cards with Font Awesome icons -> Interaction: None -> Justification: Clear, scannable, and gives due prominence, using relevant icons for Pega certifications -> Library/Method: HTML/Tailwind, Font Awesome.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #14b8a6; /* teal-500 */
+            border-bottom-color: #14b8a6;
+        }
+        .timeline-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .timeline-item.active .timeline-dot {
+            background-color: #059669; /* emerald-600 */
+            transform: scale(1.25);
+        }
+        .timeline-item.active .timeline-date, .timeline-item.active .timeline-title {
+            color: #059669; /* emerald-600 */
+            font-weight: 700;
+        }
+        .timeline-line {
+            background-color: #e2e8f0; /* slate-200 */
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            position: absolute;
+            left: 0;
+            z-index: -1;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-emerald-800 shadow-sm sticky top-0 z-10">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-white">Priyanka Thumma</h1>
+                <p class="text-sm text-emerald-100">Pega Certified Senior System Architect</p>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#summary" class="nav-link text-white">Overview</a>
+                <a href="#experience" class="nav-link text-white">Experience</a>
+                <a href="#skills" class="nav-link text-white">Skills</a>
+                <a href="#certifications" class="nav-link text-white">Certifications</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section id="summary" class="mb-16">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">Professional Summary</h2>
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <p class="text-lg leading-relaxed">
+                    Highly accomplished Pega Certified Senior System Architect with over 8 years of software development experience, including a specialized focus of 5+ years as a Pega Application Developer. Proven expertise in designing, developing, and deploying robust Pega solutions, with a strong focus on performance optimization, debugging, and end-to-end SDLC involvement. Adept at collaborating with business stakeholders and implementing efficient, user-friendly applications.
+                </p>
+            </div>
+        </section>
+
+        <section id="experience" class="mb-16">
+            <h2 class="text-3xl font-bold text-slate-900 mb-2">Career Timeline</h2>
+            <p class="text-slate-500 mb-8 text-center">Click on a role to view the details.</p>
+            
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
+                <div class="relative mb-8">
+                    <div class="timeline-line"></div>
+                    <div id="timeline-container" class="flex justify-between">
+                    </div>
+                </div>
+                <div id="experience-details" class="mt-8 p-6 bg-slate-50 rounded-lg min-h-[300px]">
+                </div>
+            </div>
+        </section>
+        
+        <section id="skills" class="mb-16">
+            <h2 class="text-3xl font-bold text-slate-900 mb-8">Technical Expertise</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Experience by Technology</h3>
+                     <p class="text-slate-500 mb-6">This chart visualizes the shift in primary technology focus throughout my career, highlighting the deep specialization in Pega.</p>
+                    <div class="chart-container h-64 sm:h-80">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Core Pega Competencies</h3>
+                    <p class="text-slate-500 mb-6">A comprehensive overview of the Pega rules, concepts, and features I have hands-on experience with.</p>
+                    <div id="pega-skills-container" class="flex flex-wrap gap-2">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="certifications" class="mb-16">
+            <h2 class="text-3xl font-bold text-slate-900 mb-8">Certifications</h2>
+             <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <i class="fas fa-award text-4xl mb-4 text-emerald-600"></i>
+                    <h3 class="font-bold text-lg">Pega Certified System Architect (CSA)</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                     <i class="fas fa-certificate text-4xl mb-4 text-emerald-600"></i>
+                    <h3 class="font-bold text-lg">Pega Certified Senior System Architect (CSSA)</h3>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                    <i class="fas fa-sitemap text-4xl mb-4 text-emerald-600"></i>
+                    <h3 class="font-bold text-lg">Pega Certified Decisioning Consultant (CPDC)</h3>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-slate-500 pt-8 border-t">
+             <div class="mb-4">
+                <h3 class="text-2xl font-bold text-slate-900">Education</h3>
+                <p class="text-lg">Bachelor of Technology - Shri Vishnu Engineering College - JNTU Kakinada (2016)</p>
+            </div>
+            <p>&copy; 2024 Priyanka Thumma | Interactive Resume</p>
+            <p>priyanka09ie028@gmail.com | +91 (855) 000-478</p>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resumeData = {
+                experience: [
+                    {
+                        id: 'ltimindtree-citi',
+                        company: 'LTIMindtree - Citi Credit Corp',
+                        role: 'Pega Developer',
+                        date: 'Jul 2022 - Jul 2024',
+                        responsibilities: [
+                            'Conducting in-depth analysis of Impact, HPI and PCM applications.',
+                            'Translate business requirements into detailed technical specifications, encompassing architecture diagrams, development plans, and coding practices adhering to industry standards.',
+                            'Employing Pega-specific elements such as Data Pages, When Rules, Circumstances, UI Rules, Connector Rules, Report Definition, Validations, Activities, SLA, DSS, flows, and more.',
+                            'Analyzing application performance and identifying areas for optimization.',
+                            'Analyzing incidents and major issues reported during releases to provide root cause analysis to management.',
+                            'Planning and coordinating the deployment of changes to higher environments.'
+                        ],
+                        stack: 'Pega v8.8, Windows, JIRA'
+                    },
+                    {
+                        id: 'ltimindtree-mondelez',
+                        company: 'LTIMindtree - Mondelez',
+                        role: 'Pega Developer',
+                        date: 'Feb 2022 - Jul 2022',
+                        responsibilities: [
+                            'Designing and implementing Sections to enhance the user interface.',
+                            'Creating Report Definitions to facilitate efficient data reporting and validation processes.',
+                            'Addressing and resolving bugs within the PEGA platform, ensuring the stability and reliability of the master data orchestration tool.',
+                            'Employing debugging techniques using tracer, clipboard, and Live UI.',
+                            'Conducting thorough unit testing to validate the correctness and functionality of implemented features.'
+                        ],
+                        stack: 'Pega v8.6, Windows, Pega Agile Studio'
+                    },
+                    {
+                        id: 'ibm-truist',
+                        company: 'IBM - Truist Bank',
+                        role: 'Pega Developer',
+                        date: 'Jan 2019 - Feb 2022',
+                        responsibilities: [
+                            'Managed end-to-end Credit Card processing in Truist Bank with three sub-applications using Pega v8.x.',
+                            'Implemented code changes and redesign using Pega v8.x.',
+                            'Provided technical support, defect fixing, and performed root cause analysis.',
+                            'Performed technical analysis for reported production defects and proposed technical solutions.',
+                            'Migrated existing master data collection and maintenance processes to the new PEGA platform.',
+                            'Collaborated with business users, conducted impact analysis, and ensured application functionality.'
+                        ],
+                        stack: 'Pega v8.x, ServiceNow'
+                    },
+                    {
+                        id: 'ibm-coop',
+                        company: 'IBM - COOP Denmark',
+                        role: 'Associate Software Engineer',
+                        date: 'Jun 2016 - Jan 2019',
+                        responsibilities: [
+                            'Worked in the IBM Mainframes environment for the largest retailer of consumer goods in Europe.',
+                            'Developed code for project modules in an IBM Mainframes environment.',
+                            'Participated in the enhancement of code through refactoring and optimization strategies to ensure long-term sustainability.'
+                        ],
+                        stack: 'IBM Mainframes, COBOL, DB2'
+                    }
+                ],
+                pegaSkills: [
+                    'Class Structures', 'Data Modelling', 'Work Object', 'PRPC Flows', 'Flow Actions', 'Assignments', 'Utilities', 'Tickets', 'Spin-off', 'Split-Join', 'Activities', 'Correspondence', 'Decision Rules', 'Harness', 'Section', 'HTML', 'Job Scheduler', 'Agents', 'SLA', 'UI Rules', 'REST Integration', 'Data Pages', 'When Rules', 'Circumstances', 'Connector Rules', 'Report Definition', 'Validations', 'DSS', 'Data Transforms', 'Queue Processing', 'Decelerative Rules'
+                ]
+            };
+
+            const timelineContainer = document.getElementById('timeline-container');
+            const experienceDetails = document.getElementById('experience-details');
+            
+            function displayExperience(jobId) {
+                const job = resumeData.experience.find(j => j.id === jobId);
+                if (job) {
+                    experienceDetails.innerHTML = `
+                        <h3 class="text-2xl font-bold text-slate-900">${job.role}</h3>
+                        <p class="text-md font-medium text-slate-700">${job.company}</p>
+                        <p class="text-sm text-slate-500 mb-4">${job.date}</p>
+                        <ul class="list-disc pl-5 space-y-2 mb-4">
+                            ${job.responsibilities.map(r => `<li>${r}</li>`).join('')}
+                        </ul>
+                        <p class="font-bold">Tech Stack: <span class="font-normal bg-teal-100 text-teal-800 text-sm px-2 py-1 rounded">${job.stack}</span></p>
+                    `;
+                    
+                    document.querySelectorAll('.timeline-item').forEach(item => {
+                        item.classList.toggle('active', item.dataset.jobId === jobId);
+                    });
+                }
+            }
+            
+            resumeData.experience.forEach((job, index) => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item flex-1 text-center px-2';
+                item.dataset.jobId = job.id;
+                item.innerHTML = `
+                    <div class="relative inline-block">
+                       <div class="timeline-dot w-4 h-4 bg-slate-400 rounded-full transition-all duration-300"></div>
+                    </div>
+                    <p class="timeline-date text-xs mt-2">${job.date.split(' - ')[0]}</p>
+                    <p class="timeline-title text-sm font-medium">${job.role}</p>
+                `;
+                item.addEventListener('click', () => displayExperience(job.id));
+                timelineContainer.appendChild(item);
+            });
+            
+            if (resumeData.experience.length > 0) {
+                displayExperience(resumeData.experience[0].id);
+            }
+            
+            const pegaSkillsContainer = document.getElementById('pega-skills-container');
+            resumeData.pegaSkills.forEach(skill => {
+                const skillTag = document.createElement('span');
+                skillTag.className = 'bg-slate-200 text-slate-700 text-sm font-medium px-3 py-1 rounded-full';
+                skillTag.textContent = skill;
+                pegaSkillsContainer.appendChild(skillTag);
+            });
+
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mainframe/COBOL', 'Pega Platform'],
+                    datasets: [{
+                        label: 'Years of Experience',
+                        data: [2.5, 5.5],
+                        backgroundColor: [
+                            'rgba(100, 116, 139, 0.6)', /* slate-500 */
+                            'rgba(5, 150, 105, 0.6)'    /* emerald-600 */
+                        ],
+                        borderColor: [
+                            'rgba(100, 116, 139, 1)',
+                            'rgba(5, 150, 105, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Years'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + ' years';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
